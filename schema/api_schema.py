@@ -17,6 +17,27 @@ class ChatResponse(BaseModel):
     session_id: str
 
 
+class ConversationMessageOut(BaseModel):
+    """One row from the conversations table."""
+    id: int
+    session_id: str
+    platform: str
+    role: str
+    message: str
+    token_count: int
+    created_at: datetime
+
+
+class ConversationSummaryOut(BaseModel):
+    """Aggregated summary for one conversation session."""
+    session_id: str
+    platform: str
+    message_count: int
+    total_tokens: int
+    started_at: datetime
+    last_message_at: datetime
+
+
 class LeadOut(BaseModel):
     """One row of the /admin/leads report."""
     user_id: str

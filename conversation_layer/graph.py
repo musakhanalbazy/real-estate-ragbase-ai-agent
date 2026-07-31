@@ -30,6 +30,7 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from conversation_layer.state import AgentState
 from conversation_layer.system_prompt import build_system_prompt
 from conversation_layer.tools import TOOLS
+from memory.conversation_memory import save_message
 from memory.long_term_memory import get_lead, increment_message_count
 from memory.short_term_memory import build_thread_id, get_checkpointer
 
@@ -110,6 +111,14 @@ def run_turn(message: str, platform: str, user_id: str) -> str:
         "handoff_reason": lead.get("handoff_reason"),
     }
 
+    # Log the user message in human-readable form
+    save_message(session_id=thread_id, platform=platform, role="user", message=message)
+
     result = _compiled_graph.invoke(input_state, config=config)
     final_message = result["messages"][-1]
-    return final_message.content
+    reply = final_message.content
+
+    # Log the assistant reply in human-readable form
+    save_message(session_id=thread_id, platform=platform, role="assistant", message=reply)
+
+    return reply

@@ -12,7 +12,7 @@ langchain-openai==1.4.1
 langchain-chroma==1.1.0
 langchain-text-splitters==1.1.2
 langgraph==1.2.10
-langgraph-checkpoint-postgres==3.1.0
+langgraph-checkpoint-postgres==3.1.1
 
 # ---- PostgreSQL driver (used for both conversation memory and the leads/CRM store) ----
 psycopg[binary]==3.3.4

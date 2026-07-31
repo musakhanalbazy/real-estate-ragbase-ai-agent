@@ -16,8 +16,9 @@ from app import settings  # noqa: F401
 from knowledge_base.vector_store import rebuild_vector_store
 from knowledge_base import retriever as knowledge_base_retriever
 from lead_intelligence.lead_schema import Lead  # noqa: F401 (kept for API docs typing)
+from memory.conversation_memory import get_full_conversation, list_conversations
 from memory.long_term_memory import list_leads
-from schema.api_schema import LeadOut
+from schema.api_schema import ConversationMessageOut, ConversationSummaryOut, LeadOut
 from webhook.messenger_webhook import router as messenger_router
 from webhook.web_chat_webhook import router as web_chat_router
 from webhook.whatsapp_webhook import router as whatsapp_router
@@ -61,6 +62,18 @@ def reindex_knowledge_base():
 def get_leads(stage: str | None = None):
     """List captured leads, optionally filtered by stage (new/engaged/qualified/...)."""
     return list_leads(stage=stage)
+
+
+@app.get("/admin/conversations", response_model=list[ConversationSummaryOut])
+def get_conversations(platform: str | None = None):
+    """List all conversation sessions, optionally filtered by platform."""
+    return list_conversations(platform=platform)
+
+
+@app.get("/admin/conversations/{session_id}", response_model=list[ConversationMessageOut])
+def get_conversation_detail(session_id: str):
+    """Return the full human-readable message history for a conversation."""
+    return get_full_conversation(session_id)
 
 
 # Serve the embeddable web chat widget at /widget
