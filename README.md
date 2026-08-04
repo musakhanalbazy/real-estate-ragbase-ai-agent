@@ -60,7 +60,8 @@ tanveer-associates-ai-agent/
 │   └── leads_report.py             # Export leads to CSV
 │
 ├── frontend/
-│   └── index.html                  # Web chat widget
+│   ├── index.html                  # Web chat widget
+│   └── streamlit_app.py            # Streamlit local chat UI
 │
 ├── data/                            # Chroma vector store + CSV exports (git-ignored)
 ├── run_server.py                    # Entry point: python run_server.py
@@ -177,6 +178,19 @@ ngrok http 8000
 ```
 
 Copy the HTTPS URL it gives you (e.g., `https://abc123.ngrok-free.app`).
+
+---
+
+## Streamlit Dashboard (Local Chat UI)
+
+A local Streamlit chat interface that talks to the same `/chat` endpoint. Uses the **same session IDs** as the web widget, WhatsApp, and Messenger — all messages are saved to the existing `conversations` and `leads` tables.
+
+```bash
+# Make sure run_server.py is running first, then:
+streamlit run frontend/streamlit_app.py
+```
+
+The sidebar lets you set/reset the session ID. You can paste a session ID from any platform (web, WhatsApp, Messenger) to continue that conversation.
 
 ---
 
