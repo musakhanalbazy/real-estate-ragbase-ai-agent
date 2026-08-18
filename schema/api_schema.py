@@ -36,3 +36,7 @@ class LeadOut(BaseModel):
     message_count: int
     handoff_requested: bool
     updated_at: datetime
+
+
+
+
